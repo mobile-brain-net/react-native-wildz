@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "wildz",
-    "slug": "wildz",
+    "name": "Wildz Live",
+    "slug": "wildz-live",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "wildz",
+    "scheme": "wildz-live",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -13,7 +13,7 @@
       "autoIncrement": true,
       "buildNumber": "1",
       "requireFullScreen": true,
-      "bundleIdentifier": "com.wildz.app",
+      "bundleIdentifier": "com.wildzlive.app",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "UIDeviceFamily": [1],
