@@ -8,12 +8,12 @@ import {
   Modal,
   TextInput,
   ScrollView,
-  SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Plus, X } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
@@ -171,8 +171,9 @@ export default function BiomesScreen() {
               </TouchableOpacity>
             </View>
 
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-              <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+            <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View>
             <Text style={styles.label}>Habitat Name *</Text>
             <TextInput
               style={styles.input}
@@ -270,8 +271,9 @@ export default function BiomesScreen() {
             >
               <Text style={styles.saveButtonText}>Save Check</Text>
             </TouchableOpacity>
+                </View>
+              </TouchableWithoutFeedback>
             </ScrollView>
-          </TouchableWithoutFeedback>
           </SafeAreaView>
         </KeyboardAvoidingView>
       </Modal>

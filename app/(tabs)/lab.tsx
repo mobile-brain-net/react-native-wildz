@@ -6,8 +6,8 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
-  SafeAreaView,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Footprints, Trees, AlertTriangle, X } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
