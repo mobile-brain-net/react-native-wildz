@@ -69,6 +69,8 @@ export default function GuideScreen() {
               placeholderTextColor={colors.skyMist + '80'}
               value={searchQuery}
               onChangeText={setSearchQuery}
+              returnKeyType="search"
+              blurOnSubmit={true}
             />
           </View>
         </View>

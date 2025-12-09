@@ -9,6 +9,10 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { Plus, X } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
@@ -49,6 +53,7 @@ export default function BiomesScreen() {
   }
 
   async function saveCheck() {
+    Keyboard.dismiss();
     if (!newCheck.biomeName) return;
 
     const score = calculateBiomeScore({
@@ -154,15 +159,20 @@ export default function BiomesScreen() {
       </SafeAreaView>
 
       <Modal visible={editorVisible} animationType="slide" presentationStyle="pageSheet">
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>New Habitat Check</Text>
-            <TouchableOpacity onPress={() => setEditorVisible(false)}>
-              <X size={24} color={colors.skyMist} />
-            </TouchableOpacity>
-          </View>
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <SafeAreaView style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>New Habitat Check</Text>
+              <TouchableOpacity onPress={() => { Keyboard.dismiss(); setEditorVisible(false); }}>
+                <X size={24} color={colors.skyMist} />
+              </TouchableOpacity>
+            </View>
 
-          <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>Habitat Name *</Text>
             <TextInput
               style={styles.input}
@@ -170,6 +180,8 @@ export default function BiomesScreen() {
               placeholderTextColor={colors.skyMist + '60'}
               value={newCheck.biomeName}
               onChangeText={(text) => setNewCheck({ ...newCheck, biomeName: text })}
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
 
             <Text style={styles.label}>Biome Type</Text>
@@ -246,6 +258,9 @@ export default function BiomesScreen() {
               onChangeText={(text) => setNewCheck({ ...newCheck, notes: text })}
               multiline
               numberOfLines={4}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onSubmitEditing={Keyboard.dismiss}
             />
 
             <TouchableOpacity
@@ -255,8 +270,10 @@ export default function BiomesScreen() {
             >
               <Text style={styles.saveButtonText}>Save Check</Text>
             </TouchableOpacity>
-          </ScrollView>
-        </SafeAreaView>
+            </ScrollView>
+          </TouchableWithoutFeedback>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );

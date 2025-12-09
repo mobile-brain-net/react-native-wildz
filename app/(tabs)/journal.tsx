@@ -9,6 +9,10 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { Plus, X } from 'lucide-react-native';
 import { colors } from '../../theme/colors';
@@ -48,6 +52,7 @@ export default function JournalScreen() {
   }
 
   async function saveLog() {
+    Keyboard.dismiss();
     if (!newLog.speciesName) return;
 
     const now = new Date();
@@ -144,15 +149,20 @@ export default function JournalScreen() {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <SafeAreaView style={styles.modalContainer}>
-          <View style={styles.modalHeader}>
-            <Text style={styles.modalTitle}>New Log</Text>
-            <TouchableOpacity onPress={() => setEditorVisible(false)}>
-              <X size={24} color={colors.skyMist} />
-            </TouchableOpacity>
-          </View>
+        <KeyboardAvoidingView 
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1 }}
+        >
+          <SafeAreaView style={styles.modalContainer}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>New Log</Text>
+              <TouchableOpacity onPress={() => { Keyboard.dismiss(); setEditorVisible(false); }}>
+                <X size={24} color={colors.skyMist} />
+              </TouchableOpacity>
+            </View>
 
-          <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
             <Text style={styles.label}>Species Name *</Text>
             <TextInput
               style={styles.input}
@@ -160,6 +170,8 @@ export default function JournalScreen() {
               placeholderTextColor={colors.skyMist + '60'}
               value={newLog.speciesName}
               onChangeText={(text) => setNewLog({ ...newLog, speciesName: text })}
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
 
             <Text style={styles.label}>Biome</Text>
@@ -203,6 +215,8 @@ export default function JournalScreen() {
               placeholderTextColor={colors.skyMist + '60'}
               value={newLog.locationNote}
               onChangeText={(text) => setNewLog({ ...newLog, locationNote: text })}
+              returnKeyType="next"
+              blurOnSubmit={false}
             />
 
             <Text style={styles.label}>Notes</Text>
@@ -214,6 +228,9 @@ export default function JournalScreen() {
               onChangeText={(text) => setNewLog({ ...newLog, notes: text })}
               multiline
               numberOfLines={4}
+              returnKeyType="done"
+              blurOnSubmit={true}
+              onSubmitEditing={Keyboard.dismiss}
             />
 
             <TouchableOpacity
@@ -223,8 +240,10 @@ export default function JournalScreen() {
             >
               <Text style={styles.saveButtonText}>Save Log</Text>
             </TouchableOpacity>
-          </ScrollView>
-        </SafeAreaView>
+            </ScrollView>
+          </TouchableWithoutFeedback>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
       </Modal>
     </View>
   );
