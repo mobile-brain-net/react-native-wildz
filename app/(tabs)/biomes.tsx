@@ -49,7 +49,11 @@ export default function BiomesScreen() {
 
   async function loadChecks() {
     const saved = await storage.getBiomes();
-    setChecks(saved.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    setChecks(
+      saved.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+    );
   }
 
   async function saveCheck() {
@@ -137,10 +141,13 @@ export default function BiomesScreen() {
                 biomeName={item.biomeName}
                 biomeType={item.biomeType}
                 score={item.latestCheck.score}
-                lastChecked={new Date(item.latestCheck.date).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                })}
+                lastChecked={new Date(item.latestCheck.date).toLocaleDateString(
+                  'en-US',
+                  {
+                    month: 'short',
+                    day: 'numeric',
+                  }
+                )}
                 onPress={() => {}}
               />
             )}
@@ -158,119 +165,148 @@ export default function BiomesScreen() {
         </TouchableOpacity>
       </SafeAreaView>
 
-      <Modal visible={editorVisible} animationType="slide" presentationStyle="pageSheet">
-        <KeyboardAvoidingView 
+      <Modal
+        visible={editorVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+      >
+        <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>New Habitat Check</Text>
-              <TouchableOpacity onPress={() => { Keyboard.dismiss(); setEditorVisible(false); }}>
+              <TouchableOpacity
+                onPress={() => {
+                  Keyboard.dismiss();
+                  setEditorVisible(false);
+                }}
+              >
                 <X size={24} color={colors.skyMist} />
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              style={styles.form}
+              showsVerticalScrollIndicator={false}
+            >
               <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
-            <Text style={styles.label}>Habitat Name *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., North Ridge Forest"
-              placeholderTextColor={colors.skyMist + '60'}
-              value={newCheck.biomeName}
-              onChangeText={(text) => setNewCheck({ ...newCheck, biomeName: text })}
-              returnKeyType="next"
-              blurOnSubmit={false}
-            />
+                  <Text style={styles.label}>Habitat Name *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="e.g., North Ridge Forest"
+                    placeholderTextColor={colors.skyMist + '60'}
+                    value={newCheck.biomeName}
+                    onChangeText={(text) =>
+                      setNewCheck({ ...newCheck, biomeName: text })
+                    }
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                  />
 
-            <Text style={styles.label}>Biome Type</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.chipRow}
-              contentContainerStyle={styles.chipRowContent}
-            >
-              {biomeTypes.map((biome) => (
-                <TagChip
-                  key={biome}
-                  label={biome}
-                  selected={newCheck.biomeType === biome}
-                  onPress={() => setNewCheck({ ...newCheck, biomeType: biome })}
-                />
-              ))}
-            </ScrollView>
+                  <Text style={styles.label}>Biome Type</Text>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.chipRow}
+                    contentContainerStyle={styles.chipRowContent}
+                  >
+                    {biomeTypes.map((biome) => (
+                      <TagChip
+                        key={biome}
+                        label={biome}
+                        selected={newCheck.biomeType === biome}
+                        onPress={() =>
+                          setNewCheck({ ...newCheck, biomeType: biome })
+                        }
+                      />
+                    ))}
+                  </ScrollView>
 
-            <Text style={styles.label}>Vegetation</Text>
-            <View style={styles.optionRow}>
-              {['lush', 'mixed', 'thin', 'bare'].map((opt) => (
-                <TagChip
-                  key={opt}
-                  label={opt}
-                  selected={newCheck.vegetation === opt}
-                  onPress={() => setNewCheck({ ...newCheck, vegetation: opt as any })}
-                />
-              ))}
-            </View>
+                  <Text style={styles.label}>Vegetation</Text>
+                  <View style={styles.optionRow}>
+                    {['lush', 'mixed', 'thin', 'bare'].map((opt) => (
+                      <TagChip
+                        key={opt}
+                        label={opt}
+                        selected={newCheck.vegetation === opt}
+                        onPress={() =>
+                          setNewCheck({ ...newCheck, vegetation: opt as any })
+                        }
+                      />
+                    ))}
+                  </View>
 
-            <Text style={styles.label}>Water Availability</Text>
-            <View style={styles.optionRow}>
-              {['abundant', 'limited', 'dry'].map((opt) => (
-                <TagChip
-                  key={opt}
-                  label={opt}
-                  selected={newCheck.water === opt}
-                  onPress={() => setNewCheck({ ...newCheck, water: opt as any })}
-                />
-              ))}
-            </View>
+                  <Text style={styles.label}>Water Availability</Text>
+                  <View style={styles.optionRow}>
+                    {['abundant', 'limited', 'dry'].map((opt) => (
+                      <TagChip
+                        key={opt}
+                        label={opt}
+                        selected={newCheck.water === opt}
+                        onPress={() =>
+                          setNewCheck({ ...newCheck, water: opt as any })
+                        }
+                      />
+                    ))}
+                  </View>
 
-            <Text style={styles.label}>Disturbance Level</Text>
-            <View style={styles.optionRow}>
-              {['low', 'medium', 'high'].map((opt) => (
-                <TagChip
-                  key={opt}
-                  label={opt}
-                  selected={newCheck.disturbance === opt}
-                  onPress={() => setNewCheck({ ...newCheck, disturbance: opt as any })}
-                />
-              ))}
-            </View>
+                  <Text style={styles.label}>Disturbance Level</Text>
+                  <View style={styles.optionRow}>
+                    {['low', 'medium', 'high'].map((opt) => (
+                      <TagChip
+                        key={opt}
+                        label={opt}
+                        selected={newCheck.disturbance === opt}
+                        onPress={() =>
+                          setNewCheck({ ...newCheck, disturbance: opt as any })
+                        }
+                      />
+                    ))}
+                  </View>
 
-            <Text style={styles.label}>Litter/Pollution</Text>
-            <View style={styles.optionRow}>
-              {['none', 'low', 'medium', 'high'].map((opt) => (
-                <TagChip
-                  key={opt}
-                  label={opt}
-                  selected={newCheck.litter === opt}
-                  onPress={() => setNewCheck({ ...newCheck, litter: opt as any })}
-                />
-              ))}
-            </View>
+                  <Text style={styles.label}>Litter/Pollution</Text>
+                  <View style={styles.optionRow}>
+                    {['none', 'low', 'medium', 'high'].map((opt) => (
+                      <TagChip
+                        key={opt}
+                        label={opt}
+                        selected={newCheck.litter === opt}
+                        onPress={() =>
+                          setNewCheck({ ...newCheck, litter: opt as any })
+                        }
+                      />
+                    ))}
+                  </View>
 
-            <Text style={styles.label}>Notes</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Additional observations..."
-              placeholderTextColor={colors.skyMist + '60'}
-              value={newCheck.notes}
-              onChangeText={(text) => setNewCheck({ ...newCheck, notes: text })}
-              multiline
-              numberOfLines={4}
-              returnKeyType="done"
-              blurOnSubmit={true}
-              onSubmitEditing={Keyboard.dismiss}
-            />
+                  <Text style={styles.label}>Notes</Text>
+                  <TextInput
+                    style={[styles.input, styles.textArea]}
+                    placeholder="Additional observations..."
+                    placeholderTextColor={colors.skyMist + '60'}
+                    value={newCheck.notes}
+                    onChangeText={(text) =>
+                      setNewCheck({ ...newCheck, notes: text })
+                    }
+                    multiline
+                    numberOfLines={4}
+                    returnKeyType="done"
+                    blurOnSubmit={true}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
 
-            <TouchableOpacity
-              style={[styles.saveButton, !newCheck.biomeName && styles.saveButtonDisabled]}
-              onPress={saveCheck}
-              disabled={!newCheck.biomeName}
-            >
-              <Text style={styles.saveButtonText}>Save Check</Text>
-            </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.saveButton,
+                      !newCheck.biomeName && styles.saveButtonDisabled,
+                    ]}
+                    onPress={saveCheck}
+                    disabled={!newCheck.biomeName}
+                  >
+                    <Text style={styles.saveButtonText}>Save Check</Text>
+                  </TouchableOpacity>
                 </View>
               </TouchableWithoutFeedback>
             </ScrollView>
