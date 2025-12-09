@@ -1,15 +1,24 @@
 {
   "expo": {
-    "name": "bolt-expo-nativewind",
-    "slug": "bolt-expo-nativewind",
+    "name": "wildz",
+    "slug": "wildz",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "wildz",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false,
+      "autoIncrement": true,
+      "buildNumber": "1",
+      "requireFullScreen": true,
+      "bundleIdentifier": "com.wildz.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIDeviceFamily": [1],
+        "UIRequiredDeviceCapabilities": ["telephony"]
+      }
     },
     "web": {
       "bundler": "metro",

@@ -16,11 +16,15 @@ import {
   SpaceMono_400Regular,
   SpaceMono_700Bold,
 } from '@expo-google-fonts/space-mono';
+import { useCheckUpdates } from '@/hooks/useCheckUpdates';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ActivityIndicator, View } from 'react-native';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   useFrameworkReady();
+  const updatesLoadingComponent = useCheckUpdates();
 
   const [fontsLoaded, fontError] = useFonts({
     'Orbitron-Bold': Orbitron_700Bold,
@@ -41,7 +45,22 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-
+  if (updatesLoadingComponent) {
+    return (
+      <SafeAreaProvider>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#fff',
+          }}
+        >
+          <ActivityIndicator size="large" />
+        </View>
+      </SafeAreaProvider>
+    );
+  }
   return (
     <>
       <Stack screenOptions={{ headerShown: false }}>
