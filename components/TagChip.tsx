@@ -31,6 +31,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.duskMoss,
     borderWidth: 2,
     borderColor: colors.skyMist + '40',
+    minHeight: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   chipSelected: {
     backgroundColor: colors.emberOrange + '30',
@@ -47,6 +50,7 @@ const styles = StyleSheet.create({
     color: colors.skyMist,
     letterSpacing: 1,
     textTransform: 'uppercase',
+    lineHeight: 16,
   },
   labelSelected: {
     color: colors.sunlitSand,

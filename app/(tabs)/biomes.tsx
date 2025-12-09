@@ -371,7 +371,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   chipRow: {
-    maxHeight: 50,
+    paddingVertical: 8,
+    marginBottom: 8,
   },
   chipRowContent: {
     gap: 8,

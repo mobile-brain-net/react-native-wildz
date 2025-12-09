@@ -29,7 +29,15 @@ type LogSection = {
   data: FieldLog[];
 };
 
-const weatherOptions = ['Sunny', 'Partly Cloudy', 'Overcast', 'Rainy', 'Foggy', 'Snowy', 'Windy'];
+const weatherOptions = [
+  'Sunny',
+  'Partly Cloudy',
+  'Overcast',
+  'Rainy',
+  'Foggy',
+  'Snowy',
+  'Windy',
+];
 
 export default function JournalScreen() {
   const [logs, setLogs] = useState<FieldLog[]>([]);
@@ -48,7 +56,11 @@ export default function JournalScreen() {
 
   async function loadLogs() {
     const saved = await storage.getJournal();
-    setLogs(saved.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    setLogs(
+      saved.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      )
+    );
   }
 
   async function saveLog() {
@@ -93,10 +105,16 @@ export default function JournalScreen() {
     if (date.toDateString() === today.toDateString()) return 'Today';
     if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
 
-    const daysAgo = Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    const daysAgo = Math.floor(
+      (today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
+    );
     if (daysAgo < 7) return `${daysAgo} days ago`;
 
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
   }
 
   const sections: LogSection[] = logs.reduce((acc, log) => {
@@ -128,7 +146,9 @@ export default function JournalScreen() {
             sections={sections}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <FieldLogCard log={item} />}
-            renderSectionHeader={({ section }) => <DateSectionHeader label={section.title} />}
+            renderSectionHeader={({ section }) => (
+              <DateSectionHeader label={section.title} />
+            )}
             contentContainerStyle={styles.list}
             stickySectionHeadersEnabled={false}
             showsVerticalScrollIndicator={false}
@@ -149,98 +169,115 @@ export default function JournalScreen() {
         animationType="slide"
         presentationStyle="pageSheet"
       >
-        <KeyboardAvoidingView 
+        <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1 }}
         >
           <SafeAreaView style={styles.modalContainer}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>New Log</Text>
-              <TouchableOpacity onPress={() => { Keyboard.dismiss(); setEditorVisible(false); }}>
+              <TouchableOpacity
+                onPress={() => {
+                  Keyboard.dismiss();
+                  setEditorVisible(false);
+                }}
+              >
                 <X size={24} color={colors.skyMist} />
               </TouchableOpacity>
             </View>
 
-            <ScrollView style={styles.form} showsVerticalScrollIndicator={false}>
+            <ScrollView
+              style={styles.form}
+              showsVerticalScrollIndicator={false}
+            >
               <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
-            <Text style={styles.label}>Species Name *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., White-tailed Deer"
-              placeholderTextColor={colors.skyMist + '60'}
-              value={newLog.speciesName}
-              onChangeText={(text) => setNewLog({ ...newLog, speciesName: text })}
-              returnKeyType="next"
-              blurOnSubmit={false}
-            />
+                  <Text style={styles.label}>Species Name *</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="e.g., White-tailed Deer"
+                    placeholderTextColor={colors.skyMist + '60'}
+                    value={newLog.speciesName}
+                    onChangeText={(text) =>
+                      setNewLog({ ...newLog, speciesName: text })
+                    }
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                  />
 
-            <Text style={styles.label}>Biome</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.chipRow}
-              contentContainerStyle={styles.chipRowContent}
-            >
-              {biomeTypes.map((biome) => (
-                <TagChip
-                  key={biome}
-                  label={biome}
-                  selected={newLog.biome === biome}
-                  onPress={() => setNewLog({ ...newLog, biome })}
-                />
-              ))}
-            </ScrollView>
+                  <Text style={styles.label}>Biome</Text>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.chipRow}
+                    contentContainerStyle={styles.chipRowContent}
+                  >
+                    {biomeTypes.map((biome) => (
+                      <TagChip
+                        key={biome}
+                        label={biome}
+                        selected={newLog.biome === biome}
+                        onPress={() => setNewLog({ ...newLog, biome })}
+                      />
+                    ))}
+                  </ScrollView>
 
-            <Text style={styles.label}>Weather</Text>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={styles.chipRow}
-              contentContainerStyle={styles.chipRowContent}
-            >
-              {weatherOptions.map((weather) => (
-                <TagChip
-                  key={weather}
-                  label={weather}
-                  selected={newLog.weather === weather}
-                  onPress={() => setNewLog({ ...newLog, weather })}
-                />
-              ))}
-            </ScrollView>
+                  <Text style={styles.label}>Weather</Text>
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.chipRow}
+                    contentContainerStyle={styles.chipRowContent}
+                  >
+                    {weatherOptions.map((weather) => (
+                      <TagChip
+                        key={weather}
+                        label={weather}
+                        selected={newLog.weather === weather}
+                        onPress={() => setNewLog({ ...newLog, weather })}
+                      />
+                    ))}
+                  </ScrollView>
 
-            <Text style={styles.label}>Location Note</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="e.g., Near creek crossing"
-              placeholderTextColor={colors.skyMist + '60'}
-              value={newLog.locationNote}
-              onChangeText={(text) => setNewLog({ ...newLog, locationNote: text })}
-              returnKeyType="next"
-              blurOnSubmit={false}
-            />
+                  <Text style={styles.label}>Location Note</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="e.g., Near creek crossing"
+                    placeholderTextColor={colors.skyMist + '60'}
+                    value={newLog.locationNote}
+                    onChangeText={(text) =>
+                      setNewLog({ ...newLog, locationNote: text })
+                    }
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                  />
 
-            <Text style={styles.label}>Notes</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Observations, behavior, habitat details..."
-              placeholderTextColor={colors.skyMist + '60'}
-              value={newLog.notes}
-              onChangeText={(text) => setNewLog({ ...newLog, notes: text })}
-              multiline
-              numberOfLines={4}
-              returnKeyType="done"
-              blurOnSubmit={true}
-              onSubmitEditing={Keyboard.dismiss}
-            />
+                  <Text style={styles.label}>Notes</Text>
+                  <TextInput
+                    style={[styles.input, styles.textArea]}
+                    placeholder="Observations, behavior, habitat details..."
+                    placeholderTextColor={colors.skyMist + '60'}
+                    value={newLog.notes}
+                    onChangeText={(text) =>
+                      setNewLog({ ...newLog, notes: text })
+                    }
+                    multiline
+                    numberOfLines={4}
+                    returnKeyType="done"
+                    blurOnSubmit={true}
+                    onSubmitEditing={Keyboard.dismiss}
+                  />
 
-            <TouchableOpacity
-              style={[styles.saveButton, !newLog.speciesName && styles.saveButtonDisabled]}
-              onPress={saveLog}
-              disabled={!newLog.speciesName}
-            >
-              <Text style={styles.saveButtonText}>Save Log</Text>
-            </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      styles.saveButton,
+                      !newLog.speciesName && styles.saveButtonDisabled,
+                    ]}
+                    onPress={saveLog}
+                    disabled={!newLog.speciesName}
+                  >
+                    <Text style={styles.saveButtonText}>Save Log</Text>
+                  </TouchableOpacity>
                 </View>
               </TouchableWithoutFeedback>
             </ScrollView>
@@ -341,7 +378,8 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   chipRow: {
-    maxHeight: 50,
+    paddingVertical: 12,
+    marginBottom: 8,
   },
   chipRowContent: {
     gap: 8,

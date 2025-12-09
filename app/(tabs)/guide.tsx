@@ -52,7 +52,8 @@ export default function GuideScreen() {
       searchQuery === '' ||
       species.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       species.latinName?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesBiome = selectedBiome === 'All' || species.biome === selectedBiome;
+    const matchesBiome =
+      selectedBiome === 'All' || species.biome === selectedBiome;
     return matchesSearch && matchesBiome;
   });
 
@@ -174,9 +175,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   biomeFilters: {
-    maxHeight: 50,
-    marginBottom: 12,
+    marginBottom: 20,
     flexGrow: 0,
+    paddingVertical: 12,
+    paddingBottom: 20,
   },
   biomeFiltersContent: {
     paddingHorizontal: 20,
