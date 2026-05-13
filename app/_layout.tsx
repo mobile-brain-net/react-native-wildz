@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { Stack, SplashScreen } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useFrameworkReady } from '@/hooks/useFrameworkReady';
 import { useFonts } from 'expo-font';
 import {
   Orbitron_700Bold,
@@ -23,7 +22,6 @@ import { ActivityIndicator, View } from 'react-native';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  useFrameworkReady();
   const updatesLoadingComponent = useCheckUpdates();
 
   const [fontsLoaded, fontError] = useFonts({
