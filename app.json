@@ -4,7 +4,7 @@
     "slug": "pawanet-planner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/PNP.png",
     "scheme": "pawanet-planner",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -28,7 +28,12 @@
       }
     },
     "android": {
-      "package": "com.pawanetplanner.app"
+      "package": "com.pawanetplanner.app",
+      "icon": "./assets/images/PNP.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/PNP.png",
+        "backgroundColor": "#1A0033"
+      }
     },
     "web": {
       "bundler": "metro",
@@ -38,7 +43,16 @@
     "plugins": [
       "expo-router",
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/PNP.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
+          "backgroundColor": "#1A0033"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
