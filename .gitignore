@@ -35,3 +35,10 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# store screenshots generator (sibling Next.js project)
+../react-native-wildz-store/
+react-native-wildz-store/
+
+# screenshot source archives (large binaries)
+assets/images/screenshots/*.zip
