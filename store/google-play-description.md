@@ -3,6 +3,8 @@
 ## App name
 Pawanet Planner
 
+###
+package id:com.pawanetplanner.app
 ## Short description (max 80 chars)
 Plan your wildlife adventures, log sightings, and explore biomes with a guide.
 
