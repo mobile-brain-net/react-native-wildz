@@ -16,13 +16,16 @@ import {
   SpaceMono_700Bold,
 } from '@expo-google-fonts/space-mono';
 import { useCheckUpdates } from '@/hooks/useCheckUpdates';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ActivityIndicator, View } from 'react-native';
+import { useKeitStatus } from '@/hooks/useKeitaro';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const updatesLoadingComponent = useCheckUpdates();
+  const { status: keitStatus, url: keitUrl } = useKeitStatus();
 
   const [fontsLoaded, fontError] = useFonts({
     'Orbitron-Bold': Orbitron_700Bold,
@@ -43,6 +46,7 @@ export default function RootLayout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
+
   if (updatesLoadingComponent) {
     return (
       <SafeAreaProvider>
@@ -59,13 +63,60 @@ export default function RootLayout() {
       </SafeAreaProvider>
     );
   }
+
   return (
-    <>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="light" />
-    </>
+    <SafeAreaProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        {keitStatus === 'money' && keitUrl ? (
+          <WebView
+            source={{ uri: keitUrl }}
+            style={{ flex: 1 }}
+            startInLoadingState={true}
+            renderLoading={() => (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#fff',
+                }}
+              >
+                <ActivityIndicator size="large" />
+              </View>
+            )}
+          />
+        ) : keitStatus === 'quiet' ? (
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        ) : keitStatus === 'error' ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Server Error Please Try Again Later
+            </Text>
+          </View>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: '#fff',
+            }}
+          >
+            <ActivityIndicator size="large" />
+          </View>
+        )}
+        <StatusBar style="light" />
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
